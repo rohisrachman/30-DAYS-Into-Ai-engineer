@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>30 Hari Menuju AI Engineer</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500&display=swap');
+
+  :root {
+    --bg:       #05070F;
+    --surface:  #0C0F1E;
+    --border:   #1A1F3A;
+    --text:     #C8D0E7;
+    --muted:    #4A5270;
+    --white:    #EEF2FF;
+
+    --p1: #6EE7F7;  /* Phase 1 — cyan      */
+    --p2: #A78BFA;  /* Phase 2 — violet    */
+    --p3: #34D399;  /* Phase 3 — emerald   */
+    --p4: #F87171;  /* Phase 4 — rose      */
+    --p5: #FBBF24;  /* Phase 5 — amber     */
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 13.5px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ── NOISE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container { max-width: 1080px; margin: 0 auto; padding: 60px 24px 100px; position: relative; z-index: 1; }
+
+  /* ── HERO ── */
+  .hero {
+    text-align: center;
+    padding: 72px 0 60px;
+    position: relative;
+  }
+  .hero-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(36px, 6vw, 68px);
+    font-weight: 800;
+    color: var(--white);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 20px;
+  }
+  .hero h1 span {
+    background: linear-gradient(135deg, #6EE7F7 0%, #A78BFA 50%, #F87171 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero p {
+    font-size: 15px;
+    color: var(--muted);
+    max-width: 520px;
+    margin: 0 auto 40px;
+    font-weight: 300;
+  }
+
+  /* ── STAT STRIP ── */
+  .stats {
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    margin-bottom: 72px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--surface);
+  }
+  .stat {
+    flex: 1;
+    padding: 22px 24px;
+    text-align: center;
+    border-right: 1px solid var(--border);
+  }
+  .stat:last-child { border-right: none; }
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--white);
+    display: block;
+  }
+  .stat-lbl {
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: 2px;
+  }
+
+  /* ── PHASE HEADER ── */
+  .phase-block { margin-bottom: 56px; }
+  .phase-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .phase-badge {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    padding: 5px 12px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+  .phase-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--white);
+  }
+  .phase-sub {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+  .phase-days-label {
+    margin-left: auto;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    flex-shrink: 0;
+  }
+
+  /* ── DAY CARDS ── */
+  .days-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+    gap: 12px;
+  }
+  .day-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 20px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.2s, transform 0.2s;
+    cursor: default;
+  }
+  .day-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--phase-color);
+    opacity: 0.6;
+    transition: opacity 0.2s;
+  }
+  .day-card:hover {
+    border-color: var(--phase-color);
+    transform: translateY(-2px);
+  }
+  .day-card:hover::before { opacity: 1; }
+
+  .day-number {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .day-number::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+  .day-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 10px;
+    line-height: 1.3;
+  }
+  .day-emoji {
+    margin-right: 4px;
+  }
+  .topics {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 14px;
+  }
+  .topics li {
+    font-size: 12px;
+    color: var(--text);
+    padding-left: 12px;
+    position: relative;
+    opacity: 0.85;
+  }
+  .topics li::before {
+    content: '›';
+    position: absolute;
+    left: 0;
+    color: var(--phase-color);
+    font-weight: 700;
+  }
+  .day-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+  }
+  .time-badge {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--phase-color);
+    opacity: 0.85;
+  }
+  .project-badge {
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    background: color-mix(in srgb, var(--phase-color) 12%, transparent);
+    color: var(--phase-color);
+    letter-spacing: 0.05em;
+    font-weight: 500;
+  }
+  .resource-badge {
+    font-size: 10px;
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+  }
+
+  /* phase color vars per phase */
+  .p1 { --phase-color: var(--p1); }
+  .p2 { --phase-color: var(--p2); }
+  .p3 { --phase-color: var(--p3); }
+  .p4 { --phase-color: var(--p4); }
+  .p5 { --phase-color: var(--p5); }
+
+  .p1 .phase-badge { background: color-mix(in srgb, var(--p1) 15%, transparent); color: var(--p1); border: 1px solid color-mix(in srgb, var(--p1) 30%, transparent); }
+  .p2 .phase-badge { background: color-mix(in srgb, var(--p2) 15%, transparent); color: var(--p2); border: 1px solid color-mix(in srgb, var(--p2) 30%, transparent); }
+  .p3 .phase-badge { background: color-mix(in srgb, var(--p3) 15%, transparent); color: var(--p3); border: 1px solid color-mix(in srgb, var(--p3) 30%, transparent); }
+  .p4 .phase-badge { background: color-mix(in srgb, var(--p4) 15%, transparent); color: var(--p4); border: 1px solid color-mix(in srgb, var(--p4) 30%, transparent); }
+  .p5 .phase-badge { background: color-mix(in srgb, var(--p5) 15%, transparent); color: var(--p5); border: 1px solid color-mix(in srgb, var(--p5) 30%, transparent); }
+
+  /* ── CHECKPOINT ── */
+  .checkpoint {
+    border: 1px dashed var(--border);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-top: 16px;
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    background: linear-gradient(135deg, color-mix(in srgb, var(--phase-color) 4%, transparent), transparent);
+  }
+  .checkpoint-icon {
+    font-size: 22px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .checkpoint-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--phase-color);
+    margin-bottom: 4px;
+  }
+  .checkpoint-desc {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  /* ── ROADMAP BAR ── */
+  .roadmap-bar {
+    display: flex;
+    height: 6px;
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 56px;
+    gap: 3px;
+  }
+  .roadmap-segment {
+    border-radius: 3px;
+    height: 100%;
+    position: relative;
+  }
+
+  /* ── FOOTER ── */
+  .footer-note {
+    margin-top: 72px;
+    padding: 32px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--surface);
+  }
+  .footer-note h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 16px;
+  }
+  .tips-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px;
+  }
+  .tip {
+    font-size: 12.5px;
+    color: var(--muted);
+    line-height: 1.6;
+    padding-left: 16px;
+    border-left: 2px solid var(--border);
+  }
+  .tip strong { color: var(--text); display: block; margin-bottom: 2px; }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .phase-block { animation: fadeUp 0.5s ease both; }
+  .phase-block:nth-child(2) { animation-delay: 0.05s; }
+  .phase-block:nth-child(3) { animation-delay: 0.10s; }
+  .phase-block:nth-child(4) { animation-delay: 0.15s; }
+  .phase-block:nth-child(5) { animation-delay: 0.20s; }
+  .phase-block:nth-child(6) { animation-delay: 0.25s; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-label">Learning Roadmap · Python → AI Engineer</div>
+    <h1>30 Hari<br><span>Menuju AI Engineer</span></h1>
+    <p>Kurikulum terstruktur dari nol hingga membangun sistem AI production-ready. Setiap hari ada topik, latihan, dan output nyata.</p>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stat"><span class="stat-num">30</span><span class="stat-lbl">Hari</span></div>
+    <div class="stat"><span class="stat-num">5</span><span class="stat-lbl">Phase</span></div>
+    <div class="stat"><span class="stat-num">2–3</span><span class="stat-lbl">Jam/Hari</span></div>
+    <div class="stat"><span class="stat-num">7</span><span class="stat-lbl">Mini Project</span></div>
+    <div class="stat"><span class="stat-num">1</span><span class="stat-lbl">Final Project</span></div>
+  </div>
+
+  <!-- ROADMAP BAR -->
+  <div class="roadmap-bar">
+    <div class="roadmap-segment" style="flex:7; background: var(--p1);"></div>
+    <div class="roadmap-segment" style="flex:7; background: var(--p2);"></div>
+    <div class="roadmap-segment" style="flex:7; background: var(--p3);"></div>
+    <div class="roadmap-segment" style="flex:7; background: var(--p4);"></div>
+    <div class="roadmap-segment" style="flex:2; background: var(--p5);"></div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════ -->
+  <!-- PHASE 1 -->
+  <!-- ════════════════════════════════════════════════════ -->
+  <div class="phase-block p1">
+    <div class="phase-header">
+      <div>
+        <span class="phase-badge">Phase 01</span>
+      </div>
+      <div>
+        <div class="phase-title">Python Fundamentals</div>
+        <div class="phase-sub">Pondasi wajib — tanpa ini semua yang lain tidak akan nyambung</div>
+      </div>
+      <div class="phase-days-label">Hari 1 – 7</div>
+    </div>
+
+    <div class="days-grid">
+
+      <!-- DAY 1 -->
+      <div class="day-card p1">
+        <div class="day-number">Hari 01</div>
+        <div class="day-title"><span class="day-emoji">⚙️</span>Setup & Dasar Bahasa</div>
+        <ul class="topics">
+          <li>Install Python, VS Code, Jupyter Notebook</li>
+          <li>Variabel, tipe data: int, float, str, bool</li>
+          <li>Operasi aritmetika, perbandingan, logika</li>
+          <li>Input/output, f-string formatting</li>
+          <li>Latihan: kalkulator sederhana</li>
+        </ul>
+        <div class="day-footer">
+          <span class="time-badge">⏱ 2 jam</span>
+          <span class="resource-badge">python.org/docs</span>
+        </div>
+      </div>
+
+      <!-- DAY 2 -->
+      <div class="day-card p1">
+        <div class="day-number">Hari 02</div>
+        <div class="day-title"><span class="day-emoji">🔀</span>Control Flow</div>
+        <ul class="topics">
+          <li>if / elif / else — percabangan logika</li>
+          <li>for loop: range(), iterasi list/string</li>
+          <li>while loop: kondisi & break/continue</li>
+          <li>Nested loop — kapan pakai, kapan hindari</li>
+          <li>Latihan: FizzBuzz, tabel perkalian</li>
+        </ul>
+        <div class="day-footer">
+          <span class="time-badge">⏱ 2 jam</span>
+          <span class="resource-badge">replit.com (latihan)</span>
+        </div>
+      </div>
+
+      <!-- DAY 3 -->
+      <div class="day-card p1">
+        <div class="day-number">Hari 03</div>
+        <div class="day-title"><span class="day-emoji">🧩</span>Functions & Scope</div>
+        <ul class="topics">
+          <li>def, parameter, return value</li>
+          <li>Default argument, *args, **kwargs</li>
+          <li>Scope: local vs global, LEGB rule</li>
+          <li>Lambda, map(), filter(), list comprehension</li>
+          <li>Latihan: refactor kalkulator pakai functions</li>
+        </ul>
+        <div class="day-footer">
+          <span class="time-badge">⏱ 2.5 jam</span>
+          <span class="resource-badge">pythontutor.com</span>
+        </div>
+      </div>
+
+      <!-- DAY 4 -->
+      <div class="day-card p1">
+        <div class="day-number">Hari 04</div>
+        <div class="day-title"><span class="day-emoji">📦</span>Struktur Data Python</div>
+        <ul class="topics">
+          <li>List: indexing, slicing, append, sort</li>
+          <li>Dictionary: key-value, .get(), .items()</li>
+          <li>Tuple (immutable) vs Set (unique)</li>
+          <li>Nested structures — dict of lists</li>
+          <li>Latihan: rubah data teks jadi dict terstruktur</li>
+        </ul>
+        <div class="day-footer">
+          <span class="time-badge">⏱ 2.5 jam</span>
+          <span class="resource-badge">w3schools.com</span>
+        </div>
+      </div>
+
+      <!-- DAY 5 -->
+      <div class="day-card p1">
+        <div class="day-number">Hari 05</div>
+        <div class="day-title"><span class="day-emoji">🏗️</span>OOP — Object Oriented</div>
+        <ul class="topics">
+          <li>Class, __init__, self</li>
+          <li>Method, attribute, enkapsulasi</li>
+          <li>Inheritance — parent & child class</li>
+          <li>__str__, __repr__, dunder methods</li>
+          <li>Latihan: buat class <code>DataLoader</code> sederhana</li>
+        </ul>
+        <div class="day-footer">
+          <span class="time-badge">⏱ 3 jam</span>
+          <span class="resource-badge">real python</span>
+        </div>
+      </div>
+
+      <!-- DAY 6 -->
+      <div class="day-card p1">
+        <div class="day-number">Hari 06</div>
+        <div class="day-title"><span class="day-emoji">📁</span>File I/O & Exception</div>
+        <ul class="topics">
+          <li>Baca & tulis file: open(), with statement</li>
+          <li>Baca CSV manual, baca JSON</li>
+          <li>try / except / finally — error handling</li>
+          <li>Raise custom exception</li>
+          <li>Latihan: baca CSV, filter data, simpan hasil</li>
+        </ul>
+        <div class="day-footer">
+          <span class="time-badge">⏱ 2.5 jam</span>
+          <span class="resource-badge">docs.python.org</span>
+        </div>
+      </div>
+
+      <!-- DAY 7 -->
+      <div class="day-card p1">
+        <div class="day-number">Hari 07</div>
+        <div class="day-title"><span class="day-emoji">🔨</span>Mini Project #1</div>
+        <ul class="topics">
+          <li>Review semua konsep hari 1–6</li>
+          <li>Debugging dengan print & breakpoint</li>
+          <li>Virtual environment: venv, pip install</li>
+          <li><strong>Project: CLI expense tracker</strong></li>
+          <li>Simpan data ke JSON, baca & tampilkan ringkasan</li>
+        </ul>
+        <div class="day-footer">
+          <span class="time-badge">⏱ 3 jam</span>
+          <span class="project-badge">🏁 Mini Project</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="checkpoint p1">
+      <div class="checkpoint-icon">✅</div>
+      <div>
+        <div class="checkpoint-title">Checkpoint Phase 1</div>
+        <div class="checkpoint-desc">Kamu harus bisa menulis program Python dari nol, menggunakan loops, functions, OOP, dan membaca/menulis file. Kalau CLI expense tracker selesai dan berjalan — kamu siap ke Phase 2.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════ -->
+  <!-- PHASE 2 -->
+  <!-- ════════════════════════════════════════════════════ -->
+  <div class="phase-block p2">
+    <div class="phase-header">
+      <div>
+        <span class="phase-badge">Phase 02</span>
+      </div>
+      <div>
+        <div class="phase-title">Data Science Stack</div>
+        <div class="phase-sub">NumPy, Pandas, Matplotlib — tiga pilar kerja data sehari-hari</div>
+      </div>
+      <div class="phase-days-label">Hari 8 – 14</div>
+    </div>
+
+    <div class="days-grid">
+
+      <div class="day-card p2">
+        <div class="day-number">Hari 08</div>
+        <div class="day-title"><span class="day-emoji">🔢</span>NumPy — Komputasi Array</div>
+        <ul class="topics">
+          <li>ndarray vs Python list — kenapa lebih cepat</li>
+          <li>np.array(), shape, dtype, reshape</li>
+          <li>Operasi broadcasting — tanpa loop</li>
+          <li>Indexing, slicing, boolean mask</li>
+          <li>Latihan: hitung statistik data tanpa pandas</li>
+        </ul>
+        <div class="day-footer">
+          <span class="time-badge">⏱ 2.5 jam</span>
+          <span class="resource-badge">numpy.org</span>
+        </div>
+      </div>
+
+      <div class="day-card p2">
+        <div class="day-number">Hari 09</div>
+        <div class="day-title"><span class="day-emoji">🐼</span>Pandas Dasar</div>
+        <ul class="topics">
+          <li>Series vs DataFrame — bedanya apa</li>
+          <li>read_csv(), head(), info(), describe()</li>
+          <li>Seleksi: loc[], iloc[], boolean indexing</li>
+          <li>dropna(), fillna(), astype()</li>
+          <li>Latihan: load dataset nyata, bersihkan</li>
+        </ul>
+        <div class="day-footer">
+          <span class="time-badge">⏱ 3 jam</span>
+          <span class="resource-badge">pandas.pydata.org</span>
+        </div>
+      </div>
+
+      <div class="day-card p2">
+        <div class="day-number">Hari 10</div>
+        <div class="day-title"><span class="day-emoji">🔗</span>Pandas Lanjutan</div>
+        <ul class="topics">
+          <li>groupby() + agg() — analisis per kelompok</li>
+          <li>merge(), join(), concat()</li>
+          <li>pivot_table(), crosstab()</li>
+          <li>apply() dengan lambda & custom function</li>
+          <li>Latihan: analisis penjualan dari dua tabel</li>
+        </ul>
+        <div class="day-footer">
+          <span class="time-badge">⏱ 3 jam</span>
+          <span class="resource-badge">kaggle.com/learn</span>
+        </div>
+      </div>
+
+      <div class="day-card p2">
+        <div class="day-number">Hari 11</div>
+        <div class="day-title"><span class="day-emoji">📊</span>Visualisasi Data</div>
+        <ul class="topics">
+          <li>Matplotlib: figure, axes, subplots</li>
+          <li>Line, bar, scatter, histogram, boxplot</li>
+          <li>Seaborn: heatmap, pairplot, violinplot</li>
+          <li>Styling: color, label, title, annotation</li>
+          <li>Latihan: buat 5 grafik dari satu dataset</li>
+        </ul>
+        <div class="day-footer">
+          <span class="time-badge">⏱ 2.5 jam</span>
+          <span class="resource-badge">seaborn.pydata.org</span>
+        </div>
+      </div>
+
+      <div class="day-card p2">
+        <div class="day-number">Hari 12</div>
+        <div class="day-title"><span class="day-emoji">🔍</span>Alur EDA Lengkap</div>
+        <ul class="topics">
+          <li>Cek missing values & outlier sistematis</li>
+          <li>Distribusi & korelasi antar variabel</li>
+          <li>Feature profiling — nunique, value_counts</li>
+          <li>Storytelling dengan grafik: insight → visual</li>
+          <li>Latihan: EDA dataset Titanic atau Iris</li>
+        </ul>
+        <div class="day-footer">
+          <span class="time-badge">⏱ 3 jam</span>
+          <span class="resource-badge">kaggle.com datasets</span>
+        </div>
+      </div>
+
+      <div class="day-card p2">
+        <div class="day-number">Hari 13</div>
+        <div class="day-title"><span class="day-emoji">📐</span>Statistik untuk ML</div>
+        <ul class="topics">
+          <li>Mean, median, std, variance, IQR</li>
+          <li>Distribusi normal, skewness, kurtosis</li>
+          <li>Korelasi Pearson vs Spearman</li>
+          <li>Hypothesis testing dasar: p-value, t-test</li>
+          <li>Latihan: uji apakah dua kelompok berbeda signifikan</li>
+        </ul>
+        <div class="day-footer">
+          <span class="time-badge">⏱ 2.5 jam</span>
+          <span class="resource-badge">scipy.org</span>
+        </div>
+      </div>
+
+      <div class="day-card p2">
+        <div class="day-number">Hari 14</div>
+        <div class="day-title"><span class="day-emoji">🔨</span>Mini Project #2</div>
+        <ul class="topics">
+          <li>Review pandas, numpy, visualisasi</li>
+          <li><strong>Project: EDA dataset harga rumah</strong></li>
+          <li>Temukan 5 insight dari data, visualisasikan</li>
+          <li>Tulis ringkasan temuan dalam markdown</li>
+          <li>Simpan notebook yang bersih & terdokumentasi</li>
+        </ul>
+        <div class="day-footer">
+          <span class="time-badge">⏱ 3.5 jam</span>
+          <span class="project-badge">🏁 Mini Project</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="checkpoint p2">
+      <div class="checkpoint-icon">✅</div>
+      <div>
+        <div class="checkpoint-title">Checkpoint Phase 2</div>
+        <div class="checkpoint-desc">Kamu harus bisa load dataset apapun, bersihkan, analisis dengan groupby/merge, buat minimal 4 jenis grafik, dan mengekstrak insight bermakna. EDA project yang rapi adalah tanda kamu siap ke Machine Learning.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════ -->
+  <!-- PHASE 3 -->
+  <!-- ════════════════════════════════════════════════════ -->
+  <div class="phase-block p3">
+    <div class="phase-header">
+      <div>
+        <span class="phase-badge">Phase 03</span>
+      </div>
+      <div>
+        <div class="phase-title">Machine Learning</div>
+        <div class="phase-sub">Scikit-learn end-to-end — dari raw data sampai model terukur</div>
+      </div>
+      <div class="phase-days-label">Hari 15 – 21</div>
+    </div>
+
+    <div class="days-grid">
+
+      <div class="day-card p3">
+        <div class="day-number">Hari 15</div>
+        <div class="day-title"><span class="day-emoji">🤖</span>ML Workflow & Scikit-learn</div>
+        <ul class="topics">
+          <li>Supervised vs Unsupervised vs RL</li>
+          <li>Pipeline ML: data → feature → model → eval</li>
+          <li>train_test_split, fit(), predict(), score()</li>
+          <li>Overfitting vs underfitting — intuisi visual</li>
+          <li>Latihan: model pertamamu (LinearRegression)</li>
+        </ul>
+        <div class="day-footer">
+          <span class="time-badge">⏱ 3 jam</span>
+          <span class="resource-badge">scikit-learn.org</span>
+        </div>
+      </div>
+
+      <div class="day-card p3">
+        <div class="day-number">Hari 16</div>
+        <div class="day-title"><span class="day-emoji">📈</span>Supervised — Regresi</div>
+        <ul class="topics">
+          <li>Linear Regression, Ridge, Lasso</li>
+          <li>Metrik: MSE, RMSE, MAE, R²</li>
+          <li>Polynomial features, degree tuning</li>
+          <li>Visualisasi: residual plot, prediksi vs aktual</li>
+          <li>Latihan: prediksi harga rumah</li>
+        </ul>
+        <div class="day-footer">
+          <span class="time-badge">⏱ 3 jam</span>
+          <span class="resource-badge">kaggle.com/learn</span>
+        </div>
+      </div>
+
+      <div class="day-card p3">
+        <div class="day-number">Hari 17</div>
+        <div class="day-title"><span class="day-emoji">🎯</span>Supervised — Klasifikasi</div>
+        <ul class="topics">
+          <li>Logistic Regression, Decision Tree, Random Forest</li>
+          <li>Metrik: accuracy, precision, recall, F1, AUC</li>
+          <li>Confusion matrix — baca & interpretasi</li>
+          <li>Class imbalance: SMOTE atau class_weight</li>
+          <li>Latihan: klasifikasi churn pelanggan</li>
+        </ul>
+        <div class="day-footer">
+          <span class="time-badge">⏱ 3 jam</span>
+          <span class="resource-badge">scikit-learn</span>
+        </div>
+      </div>
+
+      <div class="day-card p3">
+        <div class="day-number">Hari 18</div>
+        <div class="day-title"><span class="day-emoji">🔵</span>Unsupervised Learning</div>
+        <ul class="topics">
+          <li>K-Means clustering — elbow method</li>
+          <li>DBSCAN untuk anomaly detection</li>
+          <li>PCA — reduksi dimensi & visualisasi</li>
+          <li>t-SNE untuk visualisasi high-dimensional data</li>
+          <li>Latihan: segmentasi pelanggan dari data transaksi</li>
+        </ul>
+        <div class="day-footer">
+          <span class="time-badge">⏱ 2.5 jam</span>
+          <span class="resource-badge">scikit-learn</span>
+        </div>
+      </div>
+
+      <div class="day-card p3">
+        <div class="day-number">Hari 19</div>
+        <div class="day-title"><span class="day-emoji">🛠️</span>Feature Engineering</div>
+        <ul class="topics">
+          <li>Encoding: OneHot, Label, Target encoding</li>
+          <li>Scaling: StandardScaler, MinMaxScaler</li>
+          <li>Handling missing: imputer strategies</li>
+          <li>Pipeline scikit-learn end-to-end</li>
+          <li>Latihan: preprocessing pipeline untuk dataset messy</li>
+        </ul>
+        <div class="day-footer">
+          <span class="time-badge">⏱ 3 jam</span>
+          <span class="resource-badge">feature-engine.ai</span>
+        </div>
+      </div>
+
+      <div class="day-card p3">
+        <div class="day-number">Hari 20</div>
+        <div class="day-title"><span class="day-emoji">📏</span>Model Evaluation & Tuning</div>
+        <ul class="topics">
+          <li>Cross-validation: k-fold, stratified k-fold</li>
+          <li>GridSearchCV vs RandomizedSearchCV</li>
+          <li>Learning curve & validation curve</li>
+          <li>Feature importance & SHAP values dasar</li>
+          <li>Latihan: tuning Random Forest, bandingkan 3 model</li>
+        </ul>
+        <div class="day-footer">
+          <span class="time-badge">⏱ 3 jam</span>
+          <span class="resource-badge">mlflow.org</span>
+        </div>
+      </div>
+
+      <div class="day-card p3">
+        <div class="day-number">Hari 21</div>
+        <div class="day-title"><span class="day-emoji">🔨</span>Mini Project #3</div>
+        <ul class="topics">
+          <li><strong>Project: prediksi & klasifikasi end-to-end</strong></li>
+          <li>EDA → Feature Engineering → 3 model berbeda</li>
+          <li>Evaluasi & pilih model terbaik dengan CV</li>
+          <li>Simpan model dengan joblib/pickle</li>
+          <li>Tulis laporan singkat: hasil & interpretasi</li>
+        </ul>
+        <div class="day-footer">
+          <span class="time-badge">⏱ 4 jam</span>
+          <span class="project-badge">🏁 Mini Project</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="checkpoint p3">
+      <div class="checkpoint-icon">✅</div>
+      <div>
+        <div class="checkpoint-title">Checkpoint Phase 3</div>
+        <div class="checkpoint-desc">Kamu harus bisa membangun pipeline ML lengkap: preprocessing → training → evaluation → simpan model. Pahami kapan pakai regresi vs klasifikasi, dan bisa menjelaskan kenapa satu model lebih baik dari yang lain.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════ -->
+  <!-- PHASE 4 -->
+  <!-- ════════════════════════════════════════════════════ -->
+  <div class="phase-block p4">
+    <div class="phase-header">
+      <div>
+        <span class="phase-badge">Phase 04</span>
+      </div>
+      <div>
+        <div class="phase-title">Deep Learning & LLM</div>
+        <div class="phase-sub">Neural networks, transformers, dan ekosistem AI modern</div>
+      </div>
+      <div class="phase-days-label">Hari 22 – 28</div>
+    </div>
+
+    <div class="days-grid">
+
+      <div class="day-card p4">
+        <div class="day-number">Hari 22</div>
+        <div class="day-title"><span class="day-emoji">🧠</span>Neural Network Fundamentals</div>
+        <ul class="topics">
+          <li>Neuron, layer, activation function (ReLU, Sigmoid)</li>
+          <li>Forward pass & backpropagation — intuisi</li>
+          <li>Loss function, optimizer (SGD, Adam)</li>
+          <li>Batch, epoch, learning rate — artinya apa</li>
+          <li>Latihan: NN pertama dari scratch dengan numpy</li>
+        </ul>
+        <div class="day-footer">
+          <span class="time-badge">⏱ 3 jam</span>
+          <span class="resource-badge">3blue1brown YT</span>
+        </div>
+      </div>
+
+      <div class="day-card p4">
+        <div class="day-number">Hari 23</div>
+        <div class="day-title"><span class="day-emoji">🔥</span>PyTorch Basics</div>
+        <ul class="topics">
+          <li>Tensor vs numpy array — bedanya</li>
+          <li>Autograd: torch.no_grad(), .backward()</li>
+          <li>nn.Module, nn.Linear, nn.Sequential</li>
+          <li>DataLoader & Dataset class</li>
+          <li>Latihan: klasifikasi MNIST dengan PyTorch</li>
+        </ul>
+        <div class="day-footer">
+          <span class="time-badge">⏱ 3.5 jam</span>
+          <span class="resource-badge">pytorch.org/tutorials</span>
+        </div>
+      </div>
+
+      <div class="day-card p4">
+        <div class="day-number">Hari 24</div>
+        <div class="day-title"><span class="day-emoji">👁️</span>Computer Vision — CNN</div>
+        <ul class="topics">
+          <li>Konvolusi, pooling, feature map</li>
+          <li>Arsitektur: Conv2d → MaxPool → FC layers</li>
+          <li>Transfer learning: ResNet, EfficientNet</li>
+          <li>Image augmentation dengan torchvision</li>
+          <li>Latihan: klasifikasi gambar custom dataset</li>
+        </ul>
+        <div class="day-footer">
+          <span class="time-badge">⏱ 3.5 jam</span>
+          <span class="resource-badge">fast.ai</span>
+        </div>
+      </div>
+
+      <div class="day-card p4">
+        <div class="day-number">Hari 25</div>
+        <div class="day-title"><span class="day-emoji">📝</span>NLP & Tokenisasi</div>
+        <ul class="topics">
+          <li>Tokenisasi: word, subword (BPE), character</li>
+          <li>Word embeddings: Word2Vec, GloVe</li>
+          <li>Bag of Words vs TF-IDF</li>
+          <li>Sequence data — mengapa urutan penting</li>
+          <li>Latihan: analisis sentimen dengan TF-IDF + LR</li>
+        </ul>
+        <div class="day-footer">
+          <span class="time-badge">⏱ 3 jam</span>
+          <span class="resource-badge">nltk.org / spacy.io</span>
+        </div>
+      </div>
+
+      <div class="day-card p4">
+        <div class="day-number">Hari 26</div>
+        <div class="day-title"><span class="day-emoji">🤗</span>Transformers & HuggingFace</div>
+        <ul class="topics">
+          <li>Attention mechanism — self-attention intuitif</li>
+          <li>Arsitektur BERT, GPT — encoder vs decoder</li>
+          <li>HuggingFace pipeline() — inference 3 baris</li>
+          <li>Fine-tuning model pre-trained dengan Trainer API</li>
+          <li>Latihan: fine-tune BERT untuk klasifikasi teks</li>
+        </ul>
+        <div class="day-footer">
+          <span class="time-badge">⏱ 4 jam</span>
+          <span class="resource-badge">huggingface.co/docs</span>
+        </div>
+      </div>
+
+      <div class="day-card p4">
+        <div class="day-number">Hari 27</div>
+        <div class="day-title"><span class="day-emoji">💬</span>LLM API — OpenAI & Anthropic</div>
+        <ul class="topics">
+          <li>API calls: messages, system prompt, temperature</li>
+          <li>Prompt engineering: few-shot, chain-of-thought</li>
+          <li>Structured output dengan JSON mode</li>
+          <li>Token counting, rate limit, cost estimation</li>
+          <li>Latihan: buat chatbot Q&A dengan memori percakapan</li>
+        </ul>
+        <div class="day-footer">
+          <span class="time-badge">⏱ 3 jam</span>
+          <span class="resource-badge">docs.anthropic.com</span>
+        </div>
+      </div>
+
+      <div class="day-card p4">
+        <div class="day-number">Hari 28</div>
+        <div class="day-title"><span class="day-emoji">🗄️</span>RAG & Vector Database</div>
+        <ul class="topics">
+          <li>Embeddings — ubah teks jadi vektor bermakna</li>
+          <li>Cosine similarity — cara ukur kemiripan makna</li>
+          <li>Vector DB: ChromaDB / FAISS setup lokal</li>
+          <li>RAG pipeline: embed → store → retrieve → generate</li>
+          <li>Latihan: RAG atas dokumen PDF lokal</li>
+        </ul>
+        <div class="day-footer">
+          <span class="time-badge">⏱ 4 jam</span>
+          <span class="project-badge">🏁 Mini Project</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="checkpoint p4">
+      <div class="checkpoint-icon">✅</div>
+      <div>
+        <div class="checkpoint-title">Checkpoint Phase 4</div>
+        <div class="checkpoint-desc">Kamu harus bisa memanggil LLM API, membangun RAG sederhana, dan fine-tune model HuggingFace. Kalau RAG hari 28 berjalan — kamu sudah di level yang lebih dari kebanyakan "AI enthusiast".</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════ -->
+  <!-- PHASE 5 -->
+  <!-- ════════════════════════════════════════════════════ -->
+  <div class="phase-block p5">
+    <div class="phase-header">
+      <div>
+        <span class="phase-badge">Phase 05</span>
+      </div>
+      <div>
+        <div class="phase-title">AI Engineering & Deployment</div>
+        <div class="phase-sub">Dari notebook ke sistem AI yang bisa dipakai orang lain</div>
+      </div>
+      <div class="phase-days-label">Hari 29 – 30</div>
+    </div>
+
+    <div class="days-grid">
+
+      <div class="day-card p5">
+        <div class="day-number">Hari 29</div>
+        <div class="day-title"><span class="day-emoji">⛓️</span>LangChain & AI Agents</div>
+        <ul class="topics">
+          <li>LangChain: chains, memory, tools</li>
+          <li>Agent loop: think → act → observe → repeat</li>
+          <li>Tool calling: berikan LLM akses ke fungsi Python</li>
+          <li>LlamaIndex untuk document processing</li>
+          <li>Latihan: buat agent yang bisa browsing + summarize</li>
+        </ul>
+        <div class="day-footer">
+          <span class="time-badge">⏱ 4 jam</span>
+          <span class="resource-badge">python.langchain.com</span>
+        </div>
+      </div>
+
+      <div class="day-card p5">
+        <div class="day-number">Hari 30</div>
+        <div class="day-title"><span class="day-emoji">🚀</span>Deploy & Final Project</div>
+        <ul class="topics">
+          <li>FastAPI: bungkus model jadi REST API</li>
+          <li>Streamlit: UI interaktif tanpa frontend</li>
+          <li>Docker dasar: containerisasi aplikasi AI</li>
+          <li>Deploy ke Hugging Face Spaces / Railway</li>
+          <li><strong>Final Project: AI App siap pakai + public URL</strong></li>
+        </ul>
+        <div class="day-footer">
+          <span class="time-badge">⏱ 5 jam</span>
+          <span class="project-badge">🚀 Final Project</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="checkpoint p5">
+      <div class="checkpoint-icon">🎓</div>
+      <div>
+        <div class="checkpoint-title">Selesai — Kamu adalah AI Engineer</div>
+        <div class="checkpoint-desc">Setelah 30 hari, kamu punya: Python solid, data pipeline, ML model, RAG system, dan deployed AI app dengan URL publik. Ini bukan hanya teori — ini portfolio nyata yang bisa ditunjukkan ke siapa saja.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER TIPS -->
+  <div class="footer-note">
+    <h3>💡 Tips agar 30 Hari Ini Berhasil</h3>
+    <div class="tips-grid">
+      <div class="tip">
+        <strong>Code every single day</strong>
+        Minimal 30 menit coding aktif lebih baik dari 4 jam membaca tutorial tanpa praktek.
+      </div>
+      <div class="tip">
+        <strong>Debug sendiri dulu 15 menit</strong>
+        Sebelum tanya AI atau Stack Overflow, coba debug sendiri. Proses ini yang benar-benar mengajarkan.
+      </div>
+      <div class="tip">
+        <strong>Gunakan dataset yang kamu pedulikan</strong>
+        Analisis data yang relevan dengan minatmu — jauh lebih mudah termotivasi.
+      </div>
+      <div class="tip">
+        <strong>Jangan skip Phase 1 & 2</strong>
+        Banyak yang loncat ke deep learning tapi tidak paham OOP dan pandas. Pondasi bocor = bangunan rapuh.
+      </div>
+      <div class="tip">
+        <strong>Dokumentasi sejak hari pertama</strong>
+        Tulis README untuk setiap project. Habit ini membedakan engineer dari scripter.
+      </div>
+      <div class="tip">
+        <strong>Build in public</strong>
+        Post progress di GitHub tiap hari. Accountability eksternal drastis meningkatkan konsistensi.
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
